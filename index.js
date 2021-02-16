@@ -1,49 +1,82 @@
-//Imported modules
-
 const fs = require("fs");
 const inquirer = require("inquirer");
-const Employee = require("./lib/employee");
 const Manager = require("./lib/manager");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
+const employeesArray = [];
 
-managementArray = [];
+addEmployee();
 
-//Prompts for managers, pushes to managementArray
-
-function managerInput() {
+function addEmployee() {
   inquirer
     .prompt([
       {
+        type: "list",
+        message: "Please select employee role",
+        choices: ["Manager", "Engineer", "Intern"],
+        name: "role",
+      },
+      {
         type: "input",
-        message: "Please input manager name",
+        message: "Please enter employee name",
         name: "name",
       },
       {
         type: "input",
-        message: "Please input manager email address",
-        name: "email",
-      },
-      {
-        type: "input",
-        message: "Please input manager id",
+        message: "Please enter employee id",
         name: "id",
       },
       {
         type: "input",
-        message: "Please input manager office number",
-        name: "office",
+        message: "Please enter employee email",
+        name: "email",
       },
     ])
-    .then((managerResponse) => {
-      const manager = new Manager(
-        managerResponse.name,
-        managerResponse.email,
-        managerResponse.id,
-        managerResponse.office
-      );
-      managementArray.push(manager);
+    .then(function ({ name, role, id, email }) {
+      let moreInfo = "";
+      switch (role) {
+        case "Manager":
+          moreInfo = "phone number";
+          break;
+
+        case "Intern":
+          moreInfo = "school name";
+          break;
+
+        case "Engineer":
+          moreInfo = "GitHub username";
+          break;
+      }
+
+      inquirer
+        .prompt([
+          {
+            message: `What is the employee's ${moreInfo}?`,
+            name: "moreInfo",
+          },
+          {
+            type: "list",
+            message: "Would you like to add another employee?",
+            choices: ["Yes", "No"],
+            name: "addAnother",
+          },
+        ])
+        .then(function ({ moreInfo }) {
+          let newEmployee;
+          switch (role) {
+            case "Manager":
+              newEmployee = new Manager(name, id, email, moreInfo);
+              break;
+
+            case "Engineer":
+              newEmployee = new Engineer(name, id, email, moreInfo);
+              break;
+
+            case "Intern":
+              newEmployee = new Intern(name, id, email, moreInfo);
+              break;
+          }
+          employeesArray.push(newEmployee);
+        });
     });
 }
-
-managerInput();
