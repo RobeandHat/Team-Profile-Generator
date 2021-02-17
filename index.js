@@ -172,7 +172,7 @@ function content(response) {
     let card = "";
     switch (role) {
       case "Manager":
-        const buildingNumber = response.getOfficeNumber();
+        const roomNumber = response.getroomNumber();
         card = `
                 <div class="card m-4">
                     <div class="card-header bg-dark text-white">
@@ -182,7 +182,7 @@ function content(response) {
                     <div class="card-body bg-light p-2">
                         <p class="card-text bg-white border-top border-right border-left p-2 my-0">ID: ${id}</p>
                         <p class="card-text bg-white border p-2 my-0">Email: <a href="mailto:${email}">${email}</a></p>
-                        <p class="card-text bg-white border-bottom border-right border-left p-2 my-0">Room Number: ${buildingNumber}</p>
+                        <p class="card-text bg-white border-bottom border-right border-left p-2 my-0">Room Number: ${roomNumber}</p>
                     </div>
                 </div>`;
         break;
